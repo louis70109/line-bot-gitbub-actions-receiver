@@ -1,0 +1,19 @@
+{
+  "name": "LINE-video-complete-bot",
+  "description": "LINE Bot video complete template",
+  "repository": "https://github.com/louis70109/LINE-video-complete-demo.git",
+  "keywords": [
+    "LINE",
+    "flask",
+    "python",
+    "static"
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-python.git"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
