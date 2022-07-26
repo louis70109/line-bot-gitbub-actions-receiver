@@ -43,8 +43,7 @@ class LineIconSwitchController(Resource):
             },
             url=f"https://api.github.com/repos/{repo_info[0]}/actions/runs/{repo_info[1]}/rerun"
             )
-        print(res.status_code)
-        print(res.json())
+
         if res.status_code == 201:
             line_bot_api.reply_message(
                 event.reply_token,
