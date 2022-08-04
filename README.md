@@ -1,5 +1,9 @@
 # GITHUB CI Controller
 
+When CI fail, will push a fail notify FLEX message to ADMIN LINE account. Let admin deploy again to see the status. So this project will parse the request and re-run GitHub actions.
+
+> [GitHub Actions Sample](https://github.com/louis70109/nijia-blog-backup/blob/master/.github/workflows/deploy.yml)
+
 ## Heroku
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
