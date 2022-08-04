@@ -1,7 +1,7 @@
 {
-  "name": "LINE-video-complete-bot",
-  "description": "LINE Bot video complete template",
-  "repository": "https://github.com/louis70109/LINE-video-complete-demo.git",
+  "name": "LINE-Bot-Github-Actions",
+  "description": "LINE Bot Github Action template",
+  "repository": "https://github.com/louis70109/LINE-Bot-Github-Actions.git",
   "keywords": [
     "LINE",
     "flask",
