@@ -1,10 +1,10 @@
 import requests, base64, os
-from datetime import date
+from datetime import datetime
 
 
 class Github():
     def __init__(self):
-        self.today = date.today().stsrftime('%d-%m-%Y')
+        self.today = datetime.strftime("%Y-%m-%d")
         self.repo_name = 'louis70109/ideas-tree'  # change to your repo name
         self.file = self.today + '.md'
 
