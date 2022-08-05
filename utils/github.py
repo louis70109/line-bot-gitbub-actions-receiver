@@ -4,7 +4,7 @@ from datetime import datetime
 
 class Github():
     def __init__(self):
-        self.today = datetime.strftime("%Y-%m-%d")
+        self.today = datetime.now().strftime("%Y-%m-%d")
         self.repo_name = 'louis70109/ideas-tree'  # change to your repo name
         self.file = self.today + '.md'
 
