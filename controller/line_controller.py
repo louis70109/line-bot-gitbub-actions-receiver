@@ -1,5 +1,6 @@
-import os
+import os, re
 from flask import request
+
 from flask_restful import Resource, abort
 from linebot import (
     LineBotApi, WebhookHandler
@@ -8,6 +9,8 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage)
 import requests
+
+from utils.github import Github
 
 line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET'))
@@ -33,19 +36,38 @@ class LineIconSwitchController(Resource):
     @handler.add(MessageEvent, message=TextMessage)
     def handle_message(event):
         text = event.message.text
-        # message must be: "OWNER REPO RUN_ID"
-        repo_info = text.split(" ")
-        print(repo_info)
-        res = requests.post(
-            headers={
-                "Accept":"application/vnd.github+json",
-                "Authorization": f"token {os.getenv('GITHUB')}"
-            },
-            url=f"https://api.github.com/repos/{repo_info[0]}/actions/runs/{repo_info[1]}/rerun"
+
+        # message must be: "ReRun OWNER/REPO RUN_ID"
+        if re.match("ReRun\s+\w+\/(\w+\W+)*[0-9]+", text):
+            repo_info = text.split(" ")
+            print(repo_info)
+            res = requests.post(
+                headers={
+                    "Accept": "application/vnd.github+json",
+                    "Authorization": f"token {os.getenv('GITHUB')}"
+                },
+                url=f"https://api.github.com/repos/{repo_info[1]}/actions/runs/{repo_info[2]}/rerun"
             )
 
-        if res.status_code == 201:
+            if res.status_code == 201:
+                reply_text = f"✅ Re-Run success\nhttps://github.com/{repo_info[1]}/actions/runs/{repo_info[2]}"
+            else:
+                reply_text = '🧐 Please validate repo || run id'
             line_bot_api.reply_message(
                 event.reply_token,
-                messages=TextSendMessage(text=f"https://github.com/{repo_info[0]}/actions/runs/{repo_info[1]}")
+                messages=TextSendMessage(text=reply_text)
+            )
+        else:
+            github = Github()
+            record = github.get_record()
+            sha = record.get('sha')
+            content = line_bot_api.get_profile(user_id=event.source.user_id)['display_name'] + record.get('content')
+            modify_record = github.new_or_update_record(text, today_record=content, sha=sha)
+            # print(modify_record.get('html'))
+            status_message = "✅" if modify_record else "❌"
+            line_bot_api.reply_message(
+                event.reply_token,
+                messages=TextSendMessage(
+                    text=f'{status_message}\n📝https://github.com/{github.repo_name}')
+                # messages=TextSendMessage(text=str(line_bot_api.get_profile(user_id=event.source.user_id)))
             )
