@@ -61,13 +61,17 @@ class LineIconSwitchController(Resource):
             github = Github()
             record = github.get_record()
             sha = record.get('sha')
-            content = line_bot_api.get_profile(user_id=event.source.user_id)['display_name'] + record.get('content')
-            modify_record = github.new_or_update_record(text, today_record=content, sha=sha)
+            user = line_bot_api.get_profile(user_id=event.source.user_id)
+
+            # First message add User profile
+            if record.get('content') == None:
+                text = f"<h2><img src='{user.picture_url}' width=30 height=30>{user.display_name}</h2><br />{text}"
+            modify_record = github.new_or_update_record(text, today_record=record.get('content'),
+                                                        sha=sha)
             # print(modify_record.get('html'))
             status_message = "✅" if modify_record else "❌"
             line_bot_api.reply_message(
                 event.reply_token,
                 messages=TextSendMessage(
                     text=f'{status_message}\n📝https://github.com/{github.repo_name}')
-                # messages=TextSendMessage(text=str(line_bot_api.get_profile(user_id=event.source.user_id)))
             )
