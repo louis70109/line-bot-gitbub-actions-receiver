@@ -1,3 +1,4 @@
+import datetime
 import os, re
 from flask import request
 
@@ -73,5 +74,5 @@ class LineIconSwitchController(Resource):
             line_bot_api.reply_message(
                 event.reply_token,
                 messages=TextSendMessage(
-                    text=f'{status_message}\n📝https://github.com/{github.repo_name}')
+                    text=f'{status_message}\n📝https://github.com/{github.repo_name}/{datetime.now().strftime("%Y-%m-%d")}.md')
             )
