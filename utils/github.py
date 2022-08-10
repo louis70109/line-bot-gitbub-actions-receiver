@@ -22,11 +22,12 @@ class Github:
     def new_or_update_record(self, text: str, today_record: str = None, sha: str = None) -> dict:
         git_url = f"https://api.github.com/repos/{self.repo_name}/contents/{self.file}"
 
+        update_sha = {}
         # If contain SHA, means content exist.
         if sha != None:
             record = base64.b64decode(today_record).decode('UTF-8')
             text = f'{record}<br />{text}'
-        update_sha = {'sha': sha} if sha else {}
+            update_sha = {'sha': sha}
 
         res = requests.put(
             headers={
