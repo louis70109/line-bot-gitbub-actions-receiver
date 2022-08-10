@@ -75,5 +75,5 @@ class LineIconSwitchController(Resource):
             line_bot_api.reply_message(
                 event.reply_token,
                 messages=TextSendMessage(
-                    text=f'{status_message}\n📝https://github.com/{github.repo_name}/{datetime.now().strftime("%Y-%m-%d")}.md')
+                    text=f'{status_message}\n📝https://github.com/{github.repo_name}/blob/master/{datetime.now().strftime("%Y-%m-%d")}.md')
             )
