@@ -67,7 +67,8 @@ class LineIconSwitchController(Resource):
 
             # First message add User profile
             if record.get('content') == None:
-                text = f"<h2><img src='{user.picture_url}' width=30 height=30>{user.display_name}</h2><br />{text}"
+                text_html = github.markdown_to_html(text)
+                text = f"<h2><img src='{user.picture_url}' width=30 height=30>{user.display_name}</h2><br />{text_html}"
             modify_record = github.new_or_update_record(text, today_record=record.get('content'),
                                                         sha=sha)
             # print(modify_record.get('html'))

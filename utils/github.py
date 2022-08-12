@@ -22,6 +22,8 @@ class Github:
     def new_or_update_record(self, text: str, today_record: str = None, sha: str = None) -> dict:
         git_url = f"https://api.github.com/repos/{self.repo_name}/contents/{self.file}"
 
+        text = self.markdown_to_html(text)
+
         update_sha = {}
         # If contain SHA, means content exist.
         if sha != None:
@@ -42,3 +44,15 @@ class Github:
             url=git_url
         )
         return res.json()
+
+    @staticmethod
+    def markdown_to_html(contents):
+        res = requests.post(headers={
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"token {os.getenv('GITHUB')}"
+        }, url="https://api.github.com/markdown",
+        json={"text": contents})
+        
+        if res.status_code == 200:
+            return res.text
+        return contents
