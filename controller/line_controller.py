@@ -13,6 +13,7 @@ from linebot.models import (
 import requests
 
 from utils.github import Github
+from utils.user import User
 
 line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET'))
@@ -65,12 +66,18 @@ class LineIconSwitchController(Resource):
             sha = record.get('sha')
             user = line_bot_api.get_profile(user_id=event.source.user_id)
 
+            # User check function from Backend
+            # parse_user = User()
+            # where_condition = {"user_id": f"{user.user_id}"}
+            # u = parse_user.get_user(where=str(where_condition))
+
             # First message add User profile
             if record.get('content') == None:
                 text_html = github.markdown_to_html(text)
                 text = f"<h2><img src='{user.picture_url}' width=30 height=30>{user.display_name}</h2><br />{text_html}"
-            modify_record = github.new_or_update_record(text, today_record=record.get('content'),
-                                                        sha=sha)
+            modify_record = github.new_or_update_record(
+                text, today_record=record.get('content'),
+                sha=sha)
             # print(modify_record.get('html'))
             status_message = "✅" if modify_record else "❌"
             line_bot_api.reply_message(
