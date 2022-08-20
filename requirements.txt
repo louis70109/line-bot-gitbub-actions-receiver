@@ -1,5 +1,5 @@
 Flask==2.1.0
-flask-restful
+Flask-RESTful>0.3.8
 flask-Cors
 Jinja2
 python-dotenv
