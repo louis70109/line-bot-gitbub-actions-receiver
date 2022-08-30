@@ -1,8 +1,10 @@
 import os
 
+debug = False
 if os.getenv('PY_ENV') != 'production':
     from dotenv import load_dotenv
     load_dotenv()
+    debug = True
 
 from flask import Flask
 from flask_cors import CORS
@@ -21,4 +23,4 @@ def check():
 api.add_resource(LineIconSwitchController, '/webhooks/line')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=os.getenv('PORT'), debug=True)
+    app.run(host='0.0.0.0', port=os.getenv('PORT'), debug=debug)
