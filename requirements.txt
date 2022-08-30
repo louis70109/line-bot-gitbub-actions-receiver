@@ -4,6 +4,5 @@ flask-Cors
 Jinja2
 python-dotenv
 gunicorn
-uvicorn
 line-bot-sdk
 requests
