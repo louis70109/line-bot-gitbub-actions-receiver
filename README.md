@@ -48,7 +48,26 @@ npx ngrok http 5000
 ```
 ![](https://i.imgur.com/azVdG8j.png)
 
-3. Copy url to LINE Developer Console
+3. Use `change.bot_url.sh` to change your webhook url.
+
+```
+sh change_bot_url.sh YOUR_LINE_BOT_ACCESS_TOKEN  https://DOMAIN_URL/webhooks/line
+```
+
+Then will see below message:
+
+```
+--------------------------
+
+{}
+
+--------------------------
+
+{"endpoint":"https://DOMAIN_URL/webhooks/line","active":true}
+-------------------------
+
+{"success":true,"timestamp":"2022-09-17T12:18:58.936898Z","statusCode":200,"reason":"OK","detail":"200"}%                     
+```
 
 # License
 
