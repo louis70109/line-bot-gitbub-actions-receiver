@@ -1,3 +1,4 @@
+import base64
 import datetime
 import os, re
 from flask import request
@@ -9,7 +10,7 @@ from linebot import (
 )
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage)
+    MessageEvent, TextMessage, ImageMessage, TextSendMessage)
 import requests
 
 from utils.github import Github
@@ -35,6 +36,49 @@ class LineIconSwitchController(Resource):
             abort(400)
 
         return 'OK'
+
+    @handler.add(MessageEvent, message=ImageMessage)
+    def handle_sticker_message(event):
+        message_content = line_bot_api.get_message_content(event.message.id)
+        
+        image_content = b''
+        for chunk in message_content.iter_content():
+            image_content += chunk
+
+        github = Github()
+        res = requests.put(
+            headers={
+                "Accept": "application/vnd.github+json",
+                "Authorization": f"Bearer {os.getenv('GITHUB')}"
+            },
+            json={
+                "message": f"✨ Commit",
+                "committer": {"name": "NiJia Lin", "email": os.getenv('EMAIL')},
+                "content": f"{base64.b64encode(image_content).decode('ascii')}",
+                "branch": "master"},
+            url=f"https://api.github.com/repos/{github.repo_name}/contents/images/{event.message.id}.png"
+        )
+        # print(res.status_code)
+        # print(res.json())
+        response_msg = res.json().get('content').get('html_url')
+        
+        # TODO: move to github.py
+        record = github.get_record()
+        sha = record.get('sha')
+        user = line_bot_api.get_profile(user_id=event.source.user_id)
+
+        text = f"<br /><img src='{response_msg}' width=450 height=450>"
+        if record.get('content') == None:
+            text = f"<h2><img src='{user.picture_url}' width=30 height=30>{user.display_name}</h2><br /><img src='{response_msg}' width=450 height=450>"
+        modify_record = github.new_or_update_record(
+            text, today_record=record.get('content'),
+            sha=sha)
+        status_message = "✅" if modify_record else "❌"
+        line_bot_api.reply_message(
+            event.reply_token,
+            messages=TextSendMessage(
+                text=f'{status_message}\n📝https://github.com/{github.repo_name}/blob/master/{datetime.now().strftime("%Y-%m-%d")}.md')
+        )
 
     @handler.add(MessageEvent, message=TextMessage)
     def handle_message(event):
@@ -66,19 +110,13 @@ class LineIconSwitchController(Resource):
             sha = record.get('sha')
             user = line_bot_api.get_profile(user_id=event.source.user_id)
 
-            # User check function from Backend
-            # parse_user = User()
-            # where_condition = {"user_id": f"{user.user_id}"}
-            # u = parse_user.get_user(where=str(where_condition))
-
-            # First message add User profile
+            # TODO: move to github.py
             if record.get('content') == None:
                 text_html = github.markdown_to_html(text)
                 text = f"<h2><img src='{user.picture_url}' width=30 height=30>{user.display_name}</h2><br />{text_html}"
             modify_record = github.new_or_update_record(
                 text, today_record=record.get('content'),
                 sha=sha)
-            # print(modify_record.get('html'))
             status_message = "✅" if modify_record else "❌"
             line_bot_api.reply_message(
                 event.reply_token,
