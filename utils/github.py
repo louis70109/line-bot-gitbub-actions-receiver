@@ -56,3 +56,7 @@ class Github:
         if res.status_code == 200:
             return res.text
         return contents
+    
+    @staticmethod
+    def record_judgement():
+        pass
