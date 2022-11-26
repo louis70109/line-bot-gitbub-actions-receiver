@@ -1,6 +1,8 @@
-# GITHUB CI Controller
+# Receiver with GitHub Actions and Notes
 
-When CI fail, will push a fail notify FLEX message to ADMIN LINE account. Let admin deploy again to see the status. So this project will parse the request and re-run GitHub actions.
+1.  When CI fail, will push a fail Flex message notification to ADMIN LINE account.
+    - Let status readable and deploy again with ADMIN. So Receiver will parse the request and re-run GitHub actions.
+2. If you have some ideas at a moment. You can type it into LINE Bot, will commit to another repo to record it. ([reference](https://github.com/louis70109/ideas-tree/tree/master))
 
 > [GitHub Actions Sample](https://github.com/louis70109/nijia-blog-backup/blob/master/.github/workflows/deploy.yml)
 
