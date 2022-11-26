@@ -1,6 +1,7 @@
+import logging
 import requests, base64, os
 from datetime import datetime
-
+logger = logging.getLogger(__name__)
 
 class Github:
     def __init__(self):
@@ -17,6 +18,9 @@ class Github:
             },
             url=git_url
         )
+        if res.status_code >= 400:
+            logger.warning(f'❌ Get GitHub repo record fail. Info: {res.json()}')
+            return None
         return res.json()
 
     def new_or_update_record(self, text: str, today_record: str = None, sha: str = None) -> dict:
@@ -43,6 +47,9 @@ class Github:
                 "branch": "master", **update_sha},
             url=git_url
         )
+        if res.status_code >= 400:
+            logger.warning(f'❌ GitHub Record create || update fail. Info: {res.json()}')
+            return None
         return res.json()
 
     @staticmethod
@@ -55,7 +62,9 @@ class Github:
         
         if res.status_code == 200:
             return res.text
-        return contents
+        if res.status_code>=400:
+            logger.warning(f'❌ Markdown format error. Info: {res.json()}')
+            return None
     
     @staticmethod
     def record_judgement():
