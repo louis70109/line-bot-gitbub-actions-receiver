@@ -1,26 +1,24 @@
 import base64
 import datetime
 import os, re
+import requests
+import logging
+
 from flask import request
 from datetime import datetime
-
 from flask_restful import Resource, abort
-from linebot import (
-    LineBotApi, WebhookHandler
-)
+from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
     MessageEvent, TextMessage, ImageMessage, TextSendMessage)
-import requests
-
 from utils.github import Github
-from utils.user import User
 
 line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET'))
+logger = logging.getLogger(__name__)
 
 
-class LineIconSwitchController(Resource):
+class LineController(Resource):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -38,7 +36,7 @@ class LineIconSwitchController(Resource):
         return 'OK'
 
     @handler.add(MessageEvent, message=ImageMessage)
-    def handle_sticker_message(event):
+    def handle_github_message(event):
         message_content = line_bot_api.get_message_content(event.message.id)
         
         image_content = b''
@@ -70,6 +68,7 @@ class LineIconSwitchController(Resource):
         text = f"<br /><img src='{response_msg}' width=450 height=450>"
         if record.get('content') == None:
             text = f"<h2><img src='{user.picture_url}' width=30 height=30>{user.display_name}</h2><br /><img src='{response_msg}' width=450 height=450>"
+        
         modify_record = github.new_or_update_record(
             text, today_record=record.get('content'),
             sha=sha)
@@ -81,7 +80,7 @@ class LineIconSwitchController(Resource):
         )
 
     @handler.add(MessageEvent, message=TextMessage)
-    def handle_message(event):
+    def handle_github_actions_message(event):
         text = event.message.text
 
         # message must be: "ReRun OWNER/REPO RUN_ID"
@@ -99,7 +98,7 @@ class LineIconSwitchController(Resource):
             if res.status_code == 201:
                 reply_text = f"✅ Re-Run success\nhttps://github.com/{repo_info[1]}/actions/runs/{repo_info[2]}"
             else:
-                reply_text = '🧐 Please validate repo || run id'
+                reply_text = f'🧐 Please validate repo || run id, {res.json()}'
             line_bot_api.reply_message(
                 event.reply_token,
                 messages=TextSendMessage(text=reply_text)
