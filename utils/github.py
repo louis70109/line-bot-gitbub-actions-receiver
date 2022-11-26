@@ -19,8 +19,8 @@ class Github:
             url=git_url
         )
         if res.status_code >= 400:
-            logger.warning(f'❌ Get GitHub repo record fail. Info: {res.json()}')
-            return None
+            logger.debug(f'❌ GitHub repo record is None. Info: {res.json()}')
+
         return res.json()
 
     def new_or_update_record(self, text: str, today_record: str = None, sha: str = None) -> dict:
