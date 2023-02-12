@@ -24,10 +24,6 @@ class ImageController(Resource):
         name = request.form.get('name')
         args = parse.parse_args()
         image_content = args.get('image')
-        
-        print("---------------")
-        # print(image_content.read())
-        print("---------------")
 
         github = Github()
         res = requests.put(
