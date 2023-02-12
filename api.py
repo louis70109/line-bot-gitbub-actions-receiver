@@ -11,6 +11,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 from controller.line_controller import LineController
+from controller.image_controller import ImageController
 
 logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
 logger = logging.getLogger(__name__)
@@ -24,6 +25,7 @@ def check():
     return {"message": "Hello World!"}
 
 api.add_resource(LineController, '/webhooks/line')
+api.add_resource(ImageController, '/image')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=os.getenv('PORT'), debug=debug)
