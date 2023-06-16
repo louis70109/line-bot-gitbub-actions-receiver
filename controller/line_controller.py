@@ -110,7 +110,7 @@ class LineController(Resource):
             user = line_bot_api.get_profile(user_id=event.source.user_id)
 
             # TODO: move to github.py
-            if record.get('content') == None:
+            if record.get('content') is None:
                 text_html = github.markdown_to_html(text)
                 text = f"<h2><img src='{user.picture_url}' width=30 height=30>{user.display_name}</h2><br />{text_html}"
             modify_record = github.new_or_update_record(
