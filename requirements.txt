@@ -1,4 +1,4 @@
-Flask==2.1.0
+Flask==2.2.2
 Flask-RESTful>0.3.8
 flask-Cors
 Jinja2
@@ -6,3 +6,4 @@ python-dotenv
 gunicorn
 line-bot-sdk==2.4.3
 requests
+Werkzeug==2.2.2
