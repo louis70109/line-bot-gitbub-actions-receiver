@@ -104,14 +104,7 @@ class LineController(Resource):
                 messages=TextSendMessage(text=reply_text)
             )
         elif text == '入口':
-            reply_text = '''
-                - QRC: https://custom-qrcode-lpdaqdezra-zf.a.run.app
-                * Bot: https://lin.ee/pNz6HA5
-
-                攝影機: https://lin.ee/YlaqS0t
-                
-                行事曆: https://lin.ee/92O5Od8
-            '''
+            reply_text = '- QRC: https://custom-qrcode-lpdaqdezra-zf.a.run.app\n* Bot: https://lin.ee/pNz6HA5\n\n攝影機: https://lin.ee/YlaqS0t\n\n行事曆: https://lin.ee/92O5Od8'
             line_bot_api.reply_message(
                 event.reply_token,
                 messages=TextSendMessage(text=reply_text)
