@@ -7,3 +7,5 @@ gunicorn
 line-bot-sdk==2.4.3
 requests
 Werkzeug==2.2.2
+pytz==2022.2.1
+python-dateutil==2.8.2
