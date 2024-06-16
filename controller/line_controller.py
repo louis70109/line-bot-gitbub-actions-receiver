@@ -50,14 +50,12 @@ class LineController(Resource):
                 "Authorization": f"Bearer {os.getenv('GITHUB')}"
             },
             json={
-                "message": f"✨ Commit",
+                "message": f'✨ Commit {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}',
                 "committer": {"name": "NiJia Lin", "email": os.getenv('EMAIL')},
                 "content": f"{base64.b64encode(image_content).decode('ascii')}",
                 "branch": "master"},
             url=f"https://api.github.com/repos/{github.repo_name}/contents/images/{event.message.id}.png"
         )
-        # print(res.status_code)
-        # print(res.json())
         response_msg = res.json().get('content').get('html_url')
         
         # TODO: move to github.py
@@ -66,7 +64,7 @@ class LineController(Resource):
         user = line_bot_api.get_profile(user_id=event.source.user_id)
 
         text = f"<br /><img src='{response_msg}' width=450 height=450>"
-        if record.get('content') == None:
+        if record.get('content') is None:
             text = f"<h2><img src='{user.picture_url}' width=30 height=30>{user.display_name}</h2><br /><img src='{response_msg}' width=450 height=450>"
         
         modify_record = github.new_or_update_record(
@@ -86,7 +84,7 @@ class LineController(Resource):
         # message must be: "ReRun OWNER/REPO RUN_ID"
         if re.match("ReRun\s+\w+\/(\w+\W+)*[0-9]+", text):
             repo_info = text.split(" ")
-            print(repo_info)
+            logger.info(repo_info)
             res = requests.post(
                 headers={
                     "Accept": "application/vnd.github+json",

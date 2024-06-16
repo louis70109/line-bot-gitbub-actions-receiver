@@ -1,7 +1,10 @@
 import logging
-import requests, base64, os
+import requests
+import base64
+import os
 from datetime import datetime
 logger = logging.getLogger(__name__)
+
 
 class Github:
     def __init__(self):
@@ -48,7 +51,8 @@ class Github:
             url=git_url
         )
         if res.status_code >= 400:
-            logger.warning(f'❌ GitHub Record create || update fail. Info: {res.json()}')
+            logger.warning(
+                f'❌ GitHub Record create || update fail. Info: {res.json()}')
             return None
         return res.json()
 
@@ -58,14 +62,14 @@ class Github:
             "Accept": "application/vnd.github+json",
             "Authorization": f"token {os.getenv('GITHUB')}"
         }, url="https://api.github.com/markdown",
-        json={"text": contents})
-        
+            json={"text": contents})
+
         if res.status_code == 200:
             return res.text
-        if res.status_code>=400:
+        if res.status_code >= 400:
             logger.warning(f'❌ Markdown format error. Info: {res.json()}')
             return None
-    
+
     @staticmethod
     def record_judgement():
         pass
