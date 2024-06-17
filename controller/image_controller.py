@@ -32,7 +32,7 @@ class ImageController(Resource):
                 "Authorization": f"Bearer {os.getenv('GITHUB')}"
             },
             json={
-                "message": f"✨ Commit",
+                "message": '✨ Commit',
                 "committer": {"name": "NiJia Lin", "email": os.getenv('EMAIL')},
                 "content": f"{base64.b64encode(image_content.read()).decode('ascii')}",
                 "branch": "master"},
