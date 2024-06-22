@@ -32,12 +32,14 @@ class KumaController(Resource):
             prompt = "你是一位軟體工程師，以下在 Updtime-Kuma status page 當中出現的資訊你需要評斷是否解釋給主管與非技術職同事，如果有需要修改或是支援，請提供需要幫忙的單位；如果沒有或只是測試訊息，則提出相對建議。"
             response = self.model.generate_content(prompt+"\n log: "+msg)
             print(response.text)
-            requests.post('https://api.line.me/v2/bot/message/push', headers={
+            res = requests.post('https://api.line.me/v2/bot/message/push', headers={
+                'Content-Type': 'application/json',
                 'Authorization': f'Bearer {os.getenv("LINE_CHANNEL_ACCESS_TOKEN")}'},
-                data={
+                json={
                     'to': os.getenv('ADMIN_LINE_ID'),
                     'messages': [{'type': 'text', 'text': response.text}]
             })
+            print(res.json())
         return 'OK'
 
     def get(self):
