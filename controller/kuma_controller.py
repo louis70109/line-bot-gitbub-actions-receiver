@@ -57,3 +57,4 @@ class KumaController(Resource):
                             prompt + "\n" + status_message)
                         logger.info(name_id_dict[monitor_id])
                         logger.info(response.text)
+                        return response.text
