@@ -1,6 +1,4 @@
-from controller.image_controller import ImageController
-from controller.kuma_controller import KumaController
-from controller.line_controller import LineController
+
 from flask_restful import Api
 from flask_cors import CORS
 from flask import Flask
@@ -13,6 +11,10 @@ if os.getenv('PY_ENV') != 'production':
     load_dotenv()
     debug = True
 
+
+from controller.image_controller import ImageController
+from controller.kuma_controller import KumaController
+from controller.line_controller import LineController
 
 logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
 logger = logging.getLogger(__name__)
