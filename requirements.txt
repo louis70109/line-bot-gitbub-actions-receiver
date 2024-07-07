@@ -9,6 +9,6 @@ requests
 Werkzeug==2.2.2
 pytz==2022.2.1
 python-dateutil==2.8.2
-google.generativeai
+google.generativeai==0.7.1
 grpcio
 uptime-kuma-api
