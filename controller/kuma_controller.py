@@ -49,10 +49,9 @@ class KumaController(Resource):
                     time_difference = now - given_time
 
                     if time_difference < timedelta(days=5):
-                        prompt = ("Refer to the following error logs, please explain the meaning of these errors in non-technical language, "
-                                  "propose possible improvement measures, and indicate whether the assistance of other teams is needed to resolve these issues. "
-                                  "The purpose is to report to the project manager and other non-technical stakeholders in Traditional Chinese, "
-                                  "assess whether the severity requires reporting.")
+                        prompt = ("你是一位軟體工程師，以下在 Updtime-Kuma status page 當中出現的資訊"
+                                  "你需要評斷是否解釋給主管與非技術職同事，如果有需要修改或是支援，"
+                                  "請提供需要幫忙的單位；如果沒有或只是測試訊息，則提出相對建議；如果是專案的名稱，請放上原本的專案名稱。")
                         response = self.gemini_service.generate_content(
                             prompt + "\n" + status_message)
                         logger.info(name_id_dict[monitor_id])
