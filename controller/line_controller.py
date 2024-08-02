@@ -104,9 +104,9 @@ class LineController(Resource):
         with ApiClient(configuration) as api_client:
             line_bot_api = MessagingApi(api_client)
             line_bot_api.reply_message(ReplyMessageRequest(
-                event.reply_token,
-                messages=TextMessage(
-                    text=f'{status_message}\n📝https://github.com/{github.repo_name}/blob/master/{datetime.now().strftime("%Y-%m-%d")}.md')
+                replyToken=event.reply_token,
+                messages=[TextMessage(
+                    text=f'{status_message}\n📝https://github.com/{github.repo_name}/blob/master/{datetime.now().strftime("%Y-%m-%d")}.md')]
             ))
 
     @handler.add(MessageEvent, message=TextMessageContent)
@@ -132,8 +132,8 @@ class LineController(Resource):
             with ApiClient(configuration) as api_client:
                 line_bot_api = MessagingApi(api_client)
                 line_bot_api.reply_message(ReplyMessageRequest(
-                    event.reply_token,
-                    messages=TextMessage(text=reply_text)
+                    replyToken=event.reply_token,
+                    messages=[TextMessage(text=reply_text)]
                 ))
         elif text == '入口':
             reply_text = '- QRC: https://custom-qrcode-lpdaqdezra-zf.a.run.app\n* Bot: https://lin.ee/pNz6HA5\n\n攝影機: https://lin.ee/YlaqS0t\n\n行事曆: https://lin.ee/92O5Od8'
@@ -163,7 +163,9 @@ class LineController(Resource):
             with ApiClient(configuration) as api_client:
                 line_bot_api = MessagingApi(api_client)
                 line_bot_api.reply_message(ReplyMessageRequest(
-                    event.reply_token,
-                    messages=TextMessage(
-                        text=f'{status_message}\n📝https://github.com/{github.repo_name}/blob/master/{datetime.now().strftime("%Y-%m-%d")}.md')
+                    replyToken=event.reply_token,
+                    messages=[
+                        TextMessage(
+                            text=f'{status_message}\n📝https://github.com/{github.repo_name}/blob/master/{datetime.now().strftime("%Y-%m-%d")}.md')
+                    ]
                 ))
