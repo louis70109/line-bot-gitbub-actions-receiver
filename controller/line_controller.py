@@ -29,7 +29,6 @@ from linebot.v3.messaging import (
     MessagingApi,
     ReplyMessageRequest,
     TextMessage,
-    PushMessageRequest
 )
 
 
