@@ -1,13 +1,10 @@
 import base64
-import datetime
-import os, re
+import os
 import requests
 import logging
 
 from flask import request
-from datetime import datetime
-from flask_restful import Resource, abort, reqparse
-from linebot.exceptions import InvalidSignatureError
+from flask_restful import Resource, reqparse
 from utils.github import Github
 import werkzeug
 logger = logging.getLogger(__name__)
@@ -20,7 +17,8 @@ class ImageController(Resource):
 
     def post(self):
         parse = reqparse.RequestParser()
-        parse.add_argument('image', type=werkzeug.datastructures.FileStorage, location='files')
+        parse.add_argument(
+            'image', type=werkzeug.datastructures.FileStorage, location='files')
         name = request.form.get('name')
         args = parse.parse_args()
         image_content = args.get('image')
@@ -40,4 +38,3 @@ class ImageController(Resource):
         )
         response_msg = res.json()
         return response_msg
-        

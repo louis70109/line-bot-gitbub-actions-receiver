@@ -26,7 +26,7 @@ class KumaController(Resource):
         if msg:
             prompt = ("你是一位軟體工程師，以下在 Updtime-Kuma status page 當中出現的資訊"
                       "你需要評斷是否解釋給主管與非技術職同事，如果有需要修改或是支援，"
-                      "請提供需要幫忙的單位；如果沒有或只是測試訊息，則提出相對建議。")
+                      "請提供需要幫忙的單位；如果沒有或只是測試訊息，則提出中文版相對建議。")
             response = self.gemini_service.generate_content(
                 prompt + "\n log: " + msg)
             logger.info(response.text)
