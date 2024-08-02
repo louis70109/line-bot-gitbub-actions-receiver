@@ -4,7 +4,7 @@ flask-Cors
 Jinja2
 python-dotenv
 gunicorn
-line-bot-sdk==2.4.3
+line-bot-sdk
 requests
 Werkzeug==2.2.2
 pytz==2022.2.1

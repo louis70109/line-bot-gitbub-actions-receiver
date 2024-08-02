@@ -28,11 +28,10 @@ api = Api(app)
 def check():
     return {"message": "Hello World!"}
 
-    
 
 api.add_resource(LineController, '/webhooks/line')
 api.add_resource(ImageController, '/image')
 api.add_resource(KumaController, '/kuma')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=os.getenv('PORT'), debug=debug)
+    app.run(host='0.0.0.0', port=8080, debug=debug)
