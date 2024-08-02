@@ -6,4 +6,4 @@ class Config:
     ADMIN_LINE_ID = os.getenv('ADMIN_LINE_ID')
     KUMA_ACCOUNT = os.getenv('KUMA_ACCOUNT')
     KUMA_PASSWORD = os.getenv('KUMA_PASSWORD')
-    KUMA_API_URL = 'https://dashboard.nijialin.com/'
+    KUMA_API_URL = os.getenv('KUMA_API_URL')

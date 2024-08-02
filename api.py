@@ -33,4 +33,4 @@ api.add_resource(ImageController, '/image')
 api.add_resource(KumaController, '/kuma')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=debug)
+    app.run(host='0.0.0.0', port=(os.getenv('PORT') or 8080), debug=debug)
