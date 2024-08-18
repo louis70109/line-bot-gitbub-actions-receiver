@@ -65,11 +65,8 @@ class LineController(Resource):
         image_content = b''
         with ApiClient(configuration) as api_client:
             line_bot_blob_api = MessagingApiBlob(api_client)
-            message_content = line_bot_blob_api.get_message_content(
+            image_content = line_bot_blob_api.get_message_content(
                 event.message.id)
-            image_content = message_content
-            # for chunk in message_content.iter_content():
-            #     image_content += chunk
 
         github = Github()
         res = requests.put(
